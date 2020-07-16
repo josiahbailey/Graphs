@@ -1,6 +1,11 @@
+# import random
+import numpy as np
+
+
 class User:
     def __init__(self, name):
         self.name = name
+
 
 class SocialGraph:
     def __init__(self):
@@ -42,11 +47,19 @@ class SocialGraph:
         self.last_id = 0
         self.users = {}
         self.friendships = {}
-        # !!!! IMPLEMENT ME
 
-        # Add users
+        # Create users
+        for i in range(1, num_users + 1):
+            self.add_user(i)
 
-        # Create friendships
+        # Create random friendships
+        high = avg_friendships * 2
+        low = avg_friendships / 2
+        random_users = np.random.randint(1, num_users, high)
+        random_friends = np.random.randint(low, high, num_users)
+
+        print(random_users)
+        print(random_friends)
 
     def get_all_social_paths(self, user_id):
         """
@@ -65,6 +78,6 @@ class SocialGraph:
 if __name__ == '__main__':
     sg = SocialGraph()
     sg.populate_graph(10, 2)
-    print(sg.friendships)
-    connections = sg.get_all_social_paths(1)
-    print(connections)
+    # print(sg.friendships)
+    # connections = sg.get_all_social_paths(1)
+    # print(connections)
