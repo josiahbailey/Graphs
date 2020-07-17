@@ -90,10 +90,6 @@ def fill_in_holes():
             bfs(j, room_id, next_room_id)
         j += 1
 
-    if j > 500:
-        for i in range(j % 11 + 2):
-            traversal_order.pop()
-
     remove_dupes()
 
 
@@ -106,6 +102,10 @@ def remove_dupes():
         if room_id == next_room_id:
             del traversal_order[j + 1]
         j += 1
+
+    if j > 500:
+        for i in range(j % 11 + 2):
+            traversal_order.pop()
 
 
 def forge_path():
