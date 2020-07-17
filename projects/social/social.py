@@ -55,7 +55,7 @@ class SocialGraph:
 
         # Create lists of random users for friendships
         high = avg_friendships + 1
-        low = avg_friendships / 2
+        low = int(avg_friendships / 2)
         random_users = [random.randint(1, num_users)
                         for i in range(1, (high * num_users * 2) + 1)]
         random_friends = [random.randint(low, high)
@@ -101,9 +101,9 @@ class SocialGraph:
         while s.size() > 0:
             curr = s.pop()
             if curr not in visited:
-                print(curr)
+                # print(curr)
                 visited.add(curr)
-                neighbors = self.get_neighbors(curr)
+                neighbors = self.friendships[curr]
 
                 for neighbor in neighbors:
                     s.push(neighbor)
@@ -113,7 +113,7 @@ class SocialGraph:
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populate_graph(10, 2)
+    sg.populate_graph(10, 1)
     # print(sg.friendships)
-    # connections = sg.get_all_social_paths(1)
-    # print(connections)
+    connections = sg.get_all_social_paths(1)
+    print(connections)
