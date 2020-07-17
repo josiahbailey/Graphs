@@ -30,7 +30,7 @@ class Room:
             exits.append("e")
         return exits
 
-    def get_exit_ids(self):
+    def get_exits_ids(self):
         exits = {}
         exits = []
         if self.n_to is not None:
@@ -47,7 +47,7 @@ class Room:
             exits.append(self.e_to.id)
         return exits
 
-    def get_exit_dir(self):
+    def get_exits_dir(self):
         exits = {}
         if self.n_to is not None:
             exits[self.n_to.id] = 'n'

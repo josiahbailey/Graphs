@@ -66,7 +66,7 @@ def bfs(index, room_id, next_room_id):
             break
         if curr not in visited:
             visited.add(curr)
-            neighbors = world.rooms[curr].get_exit_ids()
+            neighbors = world.rooms[curr].get_exits_ids()
             for neighbor in neighbors:
                 path_copy = curr_path[:]
                 path_copy.append(neighbor)
@@ -86,7 +86,7 @@ def create_order():
 
         if curr not in visited:
             visited.add(curr)
-            neighbors = world.rooms[curr].get_exit_ids()
+            neighbors = world.rooms[curr].get_exits_ids()
             neighbors.sort()
 
             for value in neighbors:
@@ -100,11 +100,11 @@ def fill_in_holes():
         room_id = traversal_order[j]
         room = world.rooms[room_id]
         next_room_id = traversal_order[j + 1]
-        directions = room.get_exit_dir()
+        neighbors = room.get_exits_dir()
         travel_direction = 'x'
 
-        if next_room_id in directions:
-            travel_direction = directions[next_room_id]
+        if next_room_id in neighbors:
+            travel_direction = neighbors[next_room_id]
 
         can_travel = room.get_room_in_direction(travel_direction)
         if can_travel is None:
@@ -117,14 +117,13 @@ def forge_path():
     for i in range(0, len(traversal_order) - 1):
         room_id = traversal_order[i]
         next_room_id = traversal_order[i + 1]
-        directions = world.rooms[room_id].get_exit_dir()
+        directions = world.rooms[room_id].get_exits_dir()
 
         if next_room_id in directions:
             traversal_path.append(directions[next_room_id])
 
 
 create_order()
-fill_in_holes()
 fill_in_holes()
 forge_path()
 

@@ -8,14 +8,5 @@ class Player:
             self.current_room = next_room
             if (show_rooms):
                 next_room.print_room_description(self)
-            return True
         else:
             print("You cannot move in that direction.")
-            return False
-
-    def can_travel(self, direction):
-        next_room = self.current_room.get_room_in_direction(direction)
-        if next_room is not None:
-            return True
-        else:
-            return False
