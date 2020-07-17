@@ -45,13 +45,34 @@ world.load_graph(room_graph)
 
 # Print an ASCII map
 world.print_rooms()
-
 player = Player(world.starting_room)
 
-# Fill this out with directions to walk
-# traversal_path = ['n', 'n']
-
+traversal_path = []
 traversal_order = []
+
+
+def bfs(index, room_id, next_room_id):
+    q = Queue()
+    visited = set()
+    path_to_room = []
+    q.en([room_id])
+
+    while q.size() > 0:
+        curr_path = q.de()
+        curr = curr_path[-1]
+        if curr == next_room_id or next_room_id in curr_path:
+            del curr_path[0]
+            path_to_room = reversed(curr_path)
+            break
+        if curr not in visited:
+            visited.add(curr)
+            neighbors = world.rooms[curr].get_exit_ids()
+            for neighbor in neighbors:
+                path_copy = curr_path[:]
+                path_copy.append(neighbor)
+                q.en(path_copy)
+    for path in path_to_room:
+        traversal_order.insert(index + 1, path)
 
 
 def create_order():
@@ -80,57 +101,16 @@ def fill_in_holes():
         room = world.rooms[room_id]
         next_room_id = traversal_order[j + 1]
         directions = room.get_exit_dir()
+        travel_direction = 'x'
 
         if next_room_id in directions:
             travel_direction = directions[next_room_id]
-        else:
-            travel_direction = 'y'
 
         can_travel = room.get_room_in_direction(travel_direction)
-        if room_id is not next_room_id:
-            if can_travel is None:
-                q = Queue()
-                visited = set()
-                path_to_room = []
-                q.en([room_id])
+        if can_travel is None:
+            bfs(j, room_id, next_room_id)
 
-                while q.size() > 0:
-                    curr_path = q.de()
-                    curr = curr_path[-1]
-                    if curr == next_room_id or next_room_id in curr_path:
-                        del curr_path[0]
-                        path_to_room = reversed(curr_path)
-                        break
-                    if curr not in visited:
-                        visited.add(curr)
-                        neighbors = world.rooms[curr].get_exit_ids()
-                        for neighbor in neighbors:
-                            path_copy = curr_path[:]
-                            path_copy.append(neighbor)
-                            q.en(path_copy)
-                if path_to_room is not None:
-                    for item in path_to_room:
-                        traversal_order.insert(j + 1, item)
-        else:
-            del traversal_order[j + 1]
-            if j < len(traversal_order) - 1:
-                next_room_id = traversal_order[j + 1]
-            else:
-                next_room_id = -1
-            neighbors = world.rooms[room_id].get_exit_ids()
-            if next_room_id not in neighbors:
-                for n in neighbors:
-                    next_neighbors = world.rooms[n].get_exit_ids()
-                    for xn in next_neighbors:
-                        if xn == next_room_id:
-                            if j < len(traversal_order) - 2:
-                                traversal_order.insert(j + 1, n)
-                            else:
-                                traversal_order.append(n)
         j += 1
-
-
-traversal_path = []
 
 
 def forge_path():
@@ -147,92 +127,6 @@ create_order()
 fill_in_holes()
 fill_in_holes()
 forge_path()
-
-"""
-q = Queue()
-visited = set()
-path = [starting_vertex]
-q.en(path)
-
-while q.size() > 0:
-    curr_path = q.de()
-    curr = curr_path[-1]
-    if curr == destination_vertex:
-        return curr_path
-    if curr not in visited:
-        visited.add(curr)
-        neighbors = self.get_neighbors(curr)
-        for neighbor in neighbors:
-            path_copy = curr_path[:]
-            path_copy.append(neighbor)
-
-            q.en(path_copy)
-"""
-
-"""
-check if current room can move to next room
-p = Player(world.rooms[room_id])
-
-if not p.can_travel(next_room_id):
-    neighbors = world.rooms[room_id].get_exit_ids()
-
-    for n in neighbors:
-        next_neighbors = world.rooms[n].get_exit_ids()
-        for xn in next_neighbors:
-            if xn == next_room_id
-                traversal_order.insert(i + 1, n)
-
-check all of current room's neighbors for the next room
-insert it after current room in array
-"""
-
-# for n in neighbors:
-#     # next_neighbors = world.rooms[n].get_exit_ids()
-#     q.en(n)
-#     if n == next_room_id:
-#         traversal_order.insert(j + 1, n)
-#         break
-#         # for xn in next_neighbors:
-#         #     if xn == next_room_id:
-#         #         traversal_order.insert(j + 1, n)
-#         #         break
-
-
-# traversal_path = []
-# s = Stack()
-# s.push([0, ''])
-# visited = set()
-
-# while s.size() > 0:
-#     room = s.pop()
-#     curr = room[0]
-#     direction = room[1]
-#     if player.travel(direction):
-#         traversal_path.append(direction)
-#     # print(curr, direction)
-#     if curr not in visited:
-#         visited.add(curr)
-#         neighbors = world.rooms[curr].get_exit_ids()
-
-#         for key, value in neighbors.items():
-#             s.push([value, key])
-#     # else:
-
-# traversal_path.pop(0)
-# print(traversal_path)
-
-# grab current room neighbors
-# find direction of next room with room.get_exit_dir
-# i = 0
-# traversal_path = []
-# for room_id in traversal_order:
-#     directions = world.rooms[room_id].get_exit_dir()
-#     next_room_id = traversal_order[i + 1]
-#     # print(directions, room_id)
-#     if next_room_id in directions:
-#         traversal_path.append(next_room_id)
-#     if (i + 1) < len(traversal_order):
-#         i += 1
 
 # TRAVERSAL TEST
 
