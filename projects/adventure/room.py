@@ -52,7 +52,7 @@ class Room:
         if self.n_to is not None:
             exits[self.n_to.id] = 'n'
         if self.s_to is not None:
-            exits[self.s_to.id] = 'n'
+            exits[self.s_to.id] = 's'
         if self.w_to is not None:
             exits[self.w_to.id] = 'w'
         if self.e_to is not None:
