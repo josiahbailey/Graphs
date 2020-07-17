@@ -109,8 +109,22 @@ def fill_in_holes():
         can_travel = room.get_room_in_direction(travel_direction)
         if can_travel is None:
             bfs(j, room_id, next_room_id)
-
         j += 1
+
+
+def fill_in_holes_2():
+    j = 0
+    while j < (len(traversal_order) - 1):
+        room_id = traversal_order[j]
+        next_room_id = traversal_order[j + 1]
+
+        if room_id == next_room_id:
+            del traversal_order[j + 1]
+        j += 1
+
+    if j > 500:
+        for i in range(j % 11 + 2):
+            traversal_order.pop()
 
 
 def forge_path():
@@ -125,7 +139,11 @@ def forge_path():
 
 create_order()
 fill_in_holes()
+# print(traversal_order)
+fill_in_holes_2()
+# print(traversal_order)
 forge_path()
+# print(traversal_path)
 
 # TRAVERSAL TEST
 
