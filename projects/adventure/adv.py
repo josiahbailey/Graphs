@@ -94,8 +94,10 @@ def fill_in_holes():
         for i in range(j % 11 + 2):
             traversal_order.pop()
 
+    remove_dupes()
 
-def fill_in_holes_2():
+
+def remove_dupes():
     j = 0
     while j < (len(traversal_order) - 1):
         room_id = traversal_order[j]
