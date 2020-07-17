@@ -7,27 +7,6 @@ from util import Stack, Queue
 import random
 from ast import literal_eval
 
-# room_graph = {
-#     0: [(3, 5), {'n': 1, 's': 5, 'e': 3, 'w': 7}],
-#     1: [(3, 6), {'s': 0, 'n': 2, 'e': 12, 'w': 15}],
-#     2: [(3, 7), {'s': 1}],
-#     3: [(4, 5), {'w': 0, 'e': 4}],
-#     4: [(5, 5), {'w': 3}],
-#     5: [(3, 4), {'n': 0, 's': 6}],
-#     6: [(3, 3), {'n': 5, 'w': 11}],
-#     7: [(2, 5), {'w': 8, 'e': 0}],
-#     8: [(1, 5), {'e': 7}],
-#     9: [(1, 4), {'n': 8, 's': 10}],
-#     10: [(1, 3), {'n': 9, 'e': 11}],
-#     11: [(2, 3), {'w': 10, 'e': 6}],
-#     12: [(4, 6), {'w': 1, 'e': 13}],
-#     13: [(5, 6), {'w': 12, 'n': 14}],
-#     14: [(5, 7), {'s': 13}],
-#     15: [(2, 6), {'e': 1, 'w': 16}],
-#     16: [(1, 6), {'n': 17, 'e': 15}],
-#     17: [(1, 7), {'s': 16}]
-# }
-
 # Load world
 world = World()
 
@@ -60,7 +39,7 @@ def bfs(index, room_id, next_room_id):
     while q.size() > 0:
         curr_path = q.de()
         curr = curr_path[-1]
-        if curr == next_room_id or next_room_id in curr_path:
+        if room_id != next_room_id and (curr == next_room_id or next_room_id in curr_path):
             del curr_path[0]
             path_to_room = reversed(curr_path)
             break
@@ -111,6 +90,10 @@ def fill_in_holes():
             bfs(j, room_id, next_room_id)
         j += 1
 
+    if j > 500:
+        for i in range(j % 11 + 2):
+            traversal_order.pop()
+
 
 def fill_in_holes_2():
     j = 0
@@ -121,10 +104,6 @@ def fill_in_holes_2():
         if room_id == next_room_id:
             del traversal_order[j + 1]
         j += 1
-
-    if j > 500:
-        for i in range(j % 11 + 2):
-            traversal_order.pop()
 
 
 def forge_path():
@@ -139,10 +118,8 @@ def forge_path():
 
 create_order()
 fill_in_holes()
-# print(traversal_order)
-fill_in_holes_2()
-# print(traversal_order)
 forge_path()
+print(traversal_order)
 # print(traversal_path)
 
 # TRAVERSAL TEST
