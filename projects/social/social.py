@@ -1,6 +1,12 @@
+import random
+from util import Stack
+# import numpy as np
+
+
 class User:
     def __init__(self, name):
         self.name = name
+
 
 class SocialGraph:
     def __init__(self):
@@ -42,11 +48,42 @@ class SocialGraph:
         self.last_id = 0
         self.users = {}
         self.friendships = {}
-        # !!!! IMPLEMENT ME
 
-        # Add users
+        # Create users
+        for i in range(1, num_users + 1):
+            self.add_user(i)
 
-        # Create friendships
+        # Create lists of random users for friendships
+        high = avg_friendships + 1
+        low = int(avg_friendships / 2)
+        random_users = [random.randint(1, num_users)
+                        for i in range(1, (high * num_users * 2) + 1)]
+        random_friends = [random.randint(low, high)
+                          for i in range(1, num_users + 1)]
+
+        z = 0  # variable to track random users key
+
+        # Map random friends to users
+        for i in range(0, len(random_friends)):
+            user_id = i + 1
+            num_friends = random_friends[i]
+
+            for x in range(1, num_friends):
+                friend_id = random_users[z]
+                check = True
+                while check == True:
+                    if friend_id in self.friendships[user_id] or user_id in self.friendships[friend_id] or friend_id == user_id:
+                        z += 1
+                        friend_id = random_users[z]
+                    else:
+                        check = False
+                self.add_friendship(user_id, friend_id)
+                z += 1
+
+        # print(random_users)
+        # print(random_friends)
+        # print(self.users)
+        # print(self.friendships)
 
     def get_all_social_paths(self, user_id):
         """
@@ -57,14 +94,26 @@ class SocialGraph:
 
         The key is the friend's ID and the value is the path.
         """
-        visited = {}  # Note that this is a dictionary, not a set
-        # !!!! IMPLEMENT ME
+        s = Stack()
+        s.push(user_id)
+        visited = set()
+
+        while s.size() > 0:
+            curr = s.pop()
+            if curr not in visited:
+                # print(curr)
+                visited.add(curr)
+                neighbors = self.friendships[curr]
+
+                for neighbor in neighbors:
+                    s.push(neighbor)
+
         return visited
 
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populate_graph(10, 2)
-    print(sg.friendships)
+    sg.populate_graph(10, 1)
+    # print(sg.friendships)
     connections = sg.get_all_social_paths(1)
     print(connections)

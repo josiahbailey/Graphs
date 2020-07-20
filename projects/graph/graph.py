@@ -97,41 +97,7 @@ class Graph:
         Return a list containing the shortest path from
         starting_vertex to destination_vertex in
         breath-first order.
-
-        for v of graph.vertexes:
-            v.color = white
-
-        startVert.color = gray
-            queue.enqueue(startVert)
-
-        while !queue.isEmpty():
-            u = queue[0]  // Peek at head of the queue, but do not dequeue!
-
-            for v of u.neighbors:
-                if v.color == white:
-                    v.color = gray
-                    queue.enqueue(v)
-
-            queue.dequeue()
-            u.color = black
         """
-        # output = []
-        # q = Queue()
-        # visited = {}
-        # curr = starting_vertex
-
-        # while curr != None:
-        #     output.append(curr)
-        #     if curr == destination_vertex:
-        #         break
-        #     visited[curr] = curr
-        #     neighbors = self.get_neighbors(curr)
-        #     for item in neighbors:
-        #         if item not in visited:
-        #             q.en(item)
-        #     curr = q.de()
-
-        # return output
         q = Queue()
         visited = set()
         path = [starting_vertex]
@@ -157,28 +123,6 @@ class Graph:
         starting_vertex to destination_vertex in
         depth-first order.
         """
-        # s = Stack()
-        # visited = {starting_vertex: starting_vertex}
-        # curr = starting_vertex
-        # s.push(curr)
-
-        # while curr != None:
-        #     prev = curr
-        #     visited[curr] = curr
-        #     neighbors = self.get_neighbors(curr)
-        #     for item in neighbors:
-        #         if item not in visited:
-        #             s.push(item)
-        #             curr = item
-        #             break
-
-        #     if curr == destination_vertex:
-        #         break
-
-        #     if curr == prev:
-        #         curr = s.pop()
-
-        # return [*s.stack]
         s = Stack()
         visited = set()
         path = [starting_vertex]
@@ -219,39 +163,6 @@ class Graph:
                     neighbor, destination_vertex, path + [neighbor], visited)
                 if result is not None:
                     return result
-
-
-graph = Graph()
-
-graph.add_vertex(1)
-graph.add_vertex(2)
-graph.add_vertex(3)
-graph.add_vertex(4)
-graph.add_vertex(5)
-graph.add_vertex(6)
-graph.add_vertex(7)
-
-graph.add_edge(5, 3)
-graph.add_edge(6, 3)
-graph.add_edge(7, 1)
-graph.add_edge(4, 7)
-graph.add_edge(1, 2)
-graph.add_edge(7, 6)
-graph.add_edge(2, 4)
-graph.add_edge(3, 5)
-graph.add_edge(2, 3)
-graph.add_edge(4, 6)
-
-# print(graph.dft_recursive(1))
-# print(graph.bfs(1, 6))
-
-# graph = Graph()
-# graph.add_vertex('hi')
-# graph.add_vertex('bye')
-# graph.add_vertex('hello')
-# graph.add_edge('hi', 'bye')
-# graph.add_edge('hi', 'hello')
-# print(graph.get_neighbors('hi'))
 
 
 # if __name__ == '__main__':
